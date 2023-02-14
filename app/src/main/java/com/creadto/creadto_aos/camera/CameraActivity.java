@@ -12,12 +12,17 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.creadto.creadto_aos.R;
+import com.creadto.creadto_aos.camera.io.PlyWriter;
 import com.creadto.creadto_aos.camera.model.DepthData;
+import com.creadto.creadto_aos.camera.preview.PreviewBottomSheetFragment;
 import com.creadto.creadto_aos.camera.util.CameraPermissionHelper;
 import com.creadto.creadto_aos.camera.util.DisplayRotationHelper;
 import com.creadto.creadto_aos.camera.util.FullScreenHelper;
 import com.creadto.creadto_aos.camera.util.SnackbarHelper;
 import com.creadto.creadto_aos.camera.util.TrackingStateHelper;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Config;
@@ -36,6 +41,9 @@ import java.io.IOException;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 
 /**
  * This is a simple example that shows how to use ARCore Raw Depth API. The application will display
@@ -103,7 +111,29 @@ public class CameraActivity extends AppCompatActivity implements GLSurfaceView.R
                     case RUNNING :
                         btn_camera.setImageResource(R.drawable.camera_button);
                         _state = CameraState.IDLE;
-                        renderer.stopScanning();
+                        PlyWriter plyWriter = new PlyWriter(this, renderer.particleData);
+                        plyWriter.writePlyFile()
+                                        .subscribeOn(Schedulers.io())
+                                                .observeOn(AndroidSchedulers.mainThread())
+                                                        .subscribe(result -> {
+//                                                            BottomSheetDialog preview = new BottomSheetDialog(this);
+//                                                            View bottomSheetView = getLayoutInflater().inflate(R.layout.preview_bottom_sheet, null);
+//                                                            preview.setContentView(bottomSheetView);
+//
+//                                                            preview.getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
+//                                                            preview.getBehavior().setDraggable(true);
+//                                                            preview.getBehavior().setFitToContents(true);
+//                                                            preview.show();
+
+                                                            PreviewBottomSheetFragment preview = new PreviewBottomSheetFragment();
+                                                            preview.show(getSupportFragmentManager(), preview.getTag());
+
+
+//                                                            Log.d(TAG, "File was successfully written");
+//                                                            renderer.stopScanning();
+                                                        }, error -> {
+                                                            Log.e(TAG, "Error writing file", error);
+                                                        });
                         break;
                 }
                 break;

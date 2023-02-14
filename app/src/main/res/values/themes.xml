@@ -11,6 +11,14 @@
         <item name="colorOnSecondary">@color/black</item>
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
+    </style>
         <!-- Customize your theme here. -->
+    <style name="BottomSheetDialog" parent="Theme.Design.Light.BottomSheetDialog">
+        <item name="android:windowIsTranslucent">true</item>
+        <item name="bottomSheetStyle">@style/bottomSheetStyleWrapper</item>
+    </style>
+
+    <style name="bottomSheetStyleWrapper" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
     </style>
 </resources>
