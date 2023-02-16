@@ -30,7 +30,8 @@
         android:id="@+id/btn_camera"
         android:layout_width="80dp"
         android:layout_height="80dp"
-        android:layout_centerHorizontal="true"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="50dp"
         android:onClick="onClick"
@@ -40,9 +41,10 @@
         android:id="@+id/btn_blind"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
-        android:layout_marginBottom="60dp"
         android:layout_marginLeft="20dp"
+        android:layout_marginBottom="60dp"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentBottom="true"
         android:background="@drawable/circle"
         android:onClick="onClick"
         app:srcCompat="@drawable/eye_button" />
@@ -51,13 +53,12 @@
         android:id="@+id/btn_switch"
         android:layout_width="60dp"
         android:layout_height="60dp"
-        android:layout_alignParentBottom="true"
         android:layout_alignParentRight="true"
-        android:layout_marginBottom="60dp"
+        android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
+        android:layout_marginBottom="60dp"
         android:background="@drawable/circle"
         android:onClick="onClick"
         app:srcCompat="@drawable/refresh" />
-
 
 </RelativeLayout>

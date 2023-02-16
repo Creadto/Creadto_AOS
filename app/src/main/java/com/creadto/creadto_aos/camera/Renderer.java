@@ -223,7 +223,8 @@ public final class Renderer {
         Matrix.translateM(viewMatrix, 0, deltaX, deltaY, deltaZ);
     }
 
-    public void stopScanning() {
+    public void clearParticles() {
+        GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         depthFrames = new ArrayList<>();
         frameData = new ArrayList<>();
         particleData = new ArrayList<>();

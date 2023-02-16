@@ -2,6 +2,7 @@ package com.creadto.creadto_aos.camera.preview
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
+import android.opengl.Matrix
 import com.creadto.creadto_aos.camera.model.Particle
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
@@ -17,18 +18,6 @@ class PointCloudRenderer(
     private val vertexBuffer: FloatBuffer
     private val colorBuffer: ByteBuffer
     private val camera = floatArrayOf(0f, 0f, 1f)
-
-    private var cameraPosition = FloatArray(3)
-    private var cameraTarget = FloatArray(3)
-    private var cameraUp = floatArrayOf(0f, 1f, 0f)
-
-    private var previousX = 0f
-    private var previousY = 0f
-
-    private var distance = 5f
-    private var azimuth = 0f
-    private var elevation = 0f
-
 
     init {
         val vertexData = pointCloud.flatMap { listOf(it.x, it.y, it.z) }

@@ -5,9 +5,14 @@
       <map>
         <entry key="../../../layout/custom_preview.xml" value="0.1436259670366633" />
         <entry key="app/src/main/res/drawable/bottom_sheet_background.xml" value="0.238" />
+        <entry key="app/src/main/res/drawable/delete_button.xml" value="0.4165" />
         <entry key="app/src/main/res/drawable/ic_launcher_background.xml" value="0.238" />
+        <entry key="app/src/main/res/drawable/menu_navigation.xml" value="0.1585" />
+        <entry key="app/src/main/res/drawable/radius_button.xml" value="0.4165" />
         <entry key="app/src/main/res/layout/activity_camera.xml" value="0.24822695035460993" />
+        <entry key="app/src/main/res/layout/activity_main.xml" value="0.20364741641337386" />
         <entry key="app/src/main/res/layout/preview_bottom_sheet.xml" value="0.3130699088145897" />
+        <entry key="app/src/main/res/menu/menu_navigation.xml" value="0.4123076923076923" />
       </map>
     </option>
   </component>
