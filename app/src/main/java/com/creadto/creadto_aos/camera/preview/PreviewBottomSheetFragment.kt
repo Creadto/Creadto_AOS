@@ -1,7 +1,6 @@
 package com.creadto.creadto_aos.camera.preview
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,10 +9,12 @@ import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.camera.Renderer
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import com.creadto.creadto_aos.camera.io.PlyWriter
+import com.creadto.creadto_aos.camera.model.Particle
 import com.creadto.creadto_aos.databinding.PreviewBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import kotlinx.coroutines.launch
+import java.util.concurrent.CopyOnWriteArrayList
 
 class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -26,13 +27,16 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
     private val binding get() = _binding!!
     private val renderer = Renderer()
 
+    private val _particleData : CopyOnWriteArrayList<Particle> = CopyOnWriteArrayList()
+
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         _binding = PreviewBottomSheetBinding.inflate(inflater, container, false)
-        binding.GLSurfaceView.setRenderer(PointCloudRenderer(particleData))
+        _particleData.addAll(particleData)
+        binding.GLSurfaceView.setRenderer(PointCloudRenderer(_particleData))
         return binding.root
     }
 

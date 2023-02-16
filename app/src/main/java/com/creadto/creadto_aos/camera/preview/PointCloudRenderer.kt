@@ -8,11 +8,12 @@ import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
 import java.util.ArrayList
+import java.util.concurrent.CopyOnWriteArrayList
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
 class PointCloudRenderer(
-    private val pointCloud : ArrayList<Particle>
+    private val pointCloud: CopyOnWriteArrayList<Particle>
 ) : GLSurfaceView.Renderer {
 
     private val vertexBuffer: FloatBuffer

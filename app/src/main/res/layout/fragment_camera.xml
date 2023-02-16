@@ -18,7 +18,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".camera.CameraActivity">
+    tools:context=".camera.CameraFragment">
 
     <android.opengl.GLSurfaceView
         android:id="@+id/surfaceview"
@@ -33,8 +33,8 @@
         android:layout_alignParentLeft="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="50dp"
-        android:onClick="onClick"
+        android:layout_marginBottom="20dp"
+        android:clickable="true"
         app:srcCompat="@drawable/camera_button" />
 
     <ImageView
@@ -42,11 +42,11 @@
         android:layout_width="60dp"
         android:layout_height="60dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/circle"
-        android:onClick="onClick"
+        android:clickable="true"
         app:srcCompat="@drawable/eye_button" />
 
     <ImageView
@@ -56,9 +56,9 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentBottom="true"
         android:layout_marginRight="20dp"
-        android:layout_marginBottom="60dp"
+        android:layout_marginBottom="30dp"
         android:background="@drawable/circle"
-        android:onClick="onClick"
+        android:clickable="true"
         app:srcCompat="@drawable/refresh" />
 
 </RelativeLayout>
