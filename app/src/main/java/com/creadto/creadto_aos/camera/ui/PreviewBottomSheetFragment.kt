@@ -1,4 +1,4 @@
-package com.creadto.creadto_aos.camera.preview
+package com.creadto.creadto_aos.camera.ui
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.creadto.creadto_aos.R
+import com.creadto.creadto_aos.camera.PointCloudRenderer
 import com.creadto.creadto_aos.camera.Renderer
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import com.creadto.creadto_aos.camera.io.PlyWriter

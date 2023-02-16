@@ -1,13 +1,11 @@
-package com.creadto.creadto_aos.camera.preview
+package com.creadto.creadto_aos.camera
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
-import android.opengl.Matrix
 import com.creadto.creadto_aos.camera.model.Particle
 import java.nio.ByteBuffer
 import java.nio.ByteOrder
 import java.nio.FloatBuffer
-import java.util.ArrayList
 import java.util.concurrent.CopyOnWriteArrayList
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10

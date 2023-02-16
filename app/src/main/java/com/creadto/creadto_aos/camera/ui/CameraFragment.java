@@ -1,6 +1,5 @@
-package com.creadto.creadto_aos.camera;
+package com.creadto.creadto_aos.camera.ui;
 
-import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -20,11 +19,10 @@ import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.creadto.creadto_aos.R;
+import com.creadto.creadto_aos.camera.Renderer;
 import com.creadto.creadto_aos.camera.model.DepthData;
-import com.creadto.creadto_aos.camera.preview.PreviewBottomSheetFragment;
 import com.creadto.creadto_aos.camera.util.CameraPermissionHelper;
 import com.creadto.creadto_aos.camera.util.DisplayRotationHelper;
-import com.creadto.creadto_aos.camera.util.FullScreenHelper;
 import com.creadto.creadto_aos.camera.util.SnackbarHelper;
 import com.creadto.creadto_aos.camera.util.TrackingStateHelper;
 import com.google.ar.core.ArCoreApk;
@@ -42,7 +40,6 @@ import com.google.ar.core.exceptions.UnavailableSdkTooOldException;
 import com.google.ar.core.exceptions.UnavailableUserDeclinedInstallationException;
 
 import java.io.IOException;
-import java.util.Map;
 
 import javax.microedition.khronos.egl.EGLConfig;
 import javax.microedition.khronos.opengles.GL10;
@@ -178,7 +175,7 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
     @Override
     public void onResume() {
         super.onResume();
-        FullScreenHelper.setFullScreenOnWindowFocusChanged(requireActivity(), true);
+        //FullScreenHelper.setFullScreenOnWindowFocusChanged(requireActivity(), true);
 
         if (session == null) {
             Exception exception = null;
@@ -256,7 +253,7 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
     @Override
     public void onPause() {
         super.onPause();
-        FullScreenHelper.setFullScreenOnWindowFocusChanged(requireActivity(), false);
+        //FullScreenHelper.setFullScreenOnWindowFocusChanged(requireActivity(), false);
         if (session != null) {
             // Note that the order matters - see note in onResume().
             // GLSurfaceView is paused before pausing the ARCore session, to prevent onDrawFrame() from

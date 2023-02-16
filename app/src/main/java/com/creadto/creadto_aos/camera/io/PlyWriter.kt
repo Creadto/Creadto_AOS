@@ -17,7 +17,7 @@ class PlyWriter {
             val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmSS")
             val time = dateFormat.format(cal.time)
 
-            val fileName = "pointcloud$time.ply"
+            val fileName = "$time.ply"
             val file = File(context.filesDir, fileName)
             val vertexCount: Int = particleData.size
 

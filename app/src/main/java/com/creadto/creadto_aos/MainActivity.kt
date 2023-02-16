@@ -2,10 +2,10 @@ package com.creadto.creadto_aos
 
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.creadto.creadto_aos.camera.CameraFragment
+import com.creadto.creadto_aos.camera.ui.CameraFragment
+import com.creadto.creadto_aos.convert.ConvertFragment
 import com.creadto.creadto_aos.databinding.ActivityMainBinding
 import com.creadto.creadto_aos.gallery.GalleryFragment
-import com.google.android.material.bottomnavigation.BottomNavigationView
 
 
 class MainActivity : AppCompatActivity() {
@@ -19,7 +19,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         setUpBottomNavigationBar()
         supportFragmentManager.beginTransaction()
-            .replace(R.id.nav_host_container, CameraFragment()).commit()
+            .replace(R.id.nav_host_container,
+                CameraFragment()
+            ).commit()
 
     }
 
@@ -39,13 +41,15 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.nav_camera -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_container, CameraFragment()).commit()
+                        .replace(R.id.nav_host_container,
+                            CameraFragment()
+                        ).commit()
                     true
                 }
 
                 R.id.nav_convert -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_container, GalleryFragment()).commit()
+                        .replace(R.id.nav_host_container, ConvertFragment()).commit()
                     true
                 }
 

@@ -1,4 +1,4 @@
-package com.creadto.creadto_aos.gallery
+package com.creadto.creadto_aos.convert
 
 import android.os.Bundle
 import android.util.Log
@@ -6,22 +6,22 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.creadto.creadto_aos.databinding.FragmentGalleryBinding
+import com.creadto.creadto_aos.databinding.FragmentConvertBinding
 
-class GalleryFragment : Fragment() {
+class ConvertFragment : Fragment(), ConvertAdapter.FileClickListener {
 
     companion object {
         private const val TAG = "[Convert]"
     }
 
-    private var _binding : FragmentGalleryBinding? = null
+    private var _binding : FragmentConvertBinding? = null
     private val binding get() = _binding!!
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _binding = FragmentGalleryBinding.inflate(inflater, container, false)
+        _binding = FragmentConvertBinding.inflate(inflater, container, false)
         return binding.root
     }
 
@@ -30,34 +30,28 @@ class GalleryFragment : Fragment() {
         init()
     }
 
-    override fun onDestroy() {
-        _binding = null
-        super.onDestroy()
-    }
-
     private fun init() {
         setupRecyclerView()
     }
 
     private fun setupRecyclerView() {
-        val galleryAdapter = GalleryAdapter(mutableListOf())
-        binding.rvGallery.adapter = galleryAdapter
-
         val fileDir = context?.filesDir
         if(fileDir!!.exists()){
             val fileNames = fileDir.listFiles()?.map { file ->
                 file.name
             } ?: emptyList()
-            galleryAdapter.update(fileNames)
         } else {
             Log.e(TAG, "Directory not found")
         }
+    }
 
-        galleryAdapter.setOnItemClickListener(object: GalleryAdapter.FileClickListener{
-            override fun onItemClickListener(file: String) {
-                Log.d("TEST", "${file}")
-            }
-        })
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
+    }
+
+    override fun onItemClickListener(file: String) {
 
     }
+
 }

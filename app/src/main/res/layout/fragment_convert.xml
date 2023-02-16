@@ -4,15 +4,16 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".gallery.GalleryFragment">
+    tools:context=".convert.ConvertFragment">
+
 
     <TextView
-        android:id="@+id/tv_gallery"
+        android:id="@+id/tv_convert"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="20dp"
         android:layout_marginTop="20dp"
-        android:text="@string/gallery"
+        android:text="@string/convert"
         android:textSize="25sp"
         android:textColor="@color/black"
         android:textStyle="bold"
@@ -20,13 +21,13 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_gallery"
+        android:id="@+id/rv_convert"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="20dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tv_gallery"
+        app:layout_constraintTop_toBottomOf="@+id/tv_convert"
         app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
