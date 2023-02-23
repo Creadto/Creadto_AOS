@@ -10,7 +10,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.databinding.FragmentGalleryBinding
@@ -70,6 +69,7 @@ class GalleryFragment : Fragment() {
         })
     }
 
+    // Swipe Delete helper
     private fun setSwipeToDelete(list : MutableList<String>) {
         ItemTouchHelper(
             object : ItemTouchHelper.SimpleCallback(
@@ -89,7 +89,7 @@ class GalleryFragment : Fragment() {
                     val fileName = list.get(position)
                     val fileDir = context?.filesDir
                     val deleteFile = File(fileDir, fileName)
-                    deleteFile.delete()
+                    deleteFile.deleteRecursively()
                     list.removeAt(position)
                     (binding.rvGallery.adapter as GalleryAdapter).update(list)
                 }

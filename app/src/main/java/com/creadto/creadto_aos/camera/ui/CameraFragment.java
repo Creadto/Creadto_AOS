@@ -1,5 +1,6 @@
 package com.creadto.creadto_aos.camera.ui;
 
+import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
@@ -7,6 +8,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
+import android.content.Intent;
 import android.media.Image;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -48,7 +50,7 @@ import javax.microedition.khronos.opengles.GL10;
  * This is a simple example that shows how to use ARCore Raw Depth API. The application will display
  * a 3D point cloud and allow the user control the number of points based on depth confidence.
  */
-public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
+public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, FileListener {
     private static final String TAG = CameraFragment.class.getSimpleName();
 
     // Rendering. The Renderers are created here, and initialized when the GL surface is created.
@@ -79,6 +81,9 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
     }
 
     private CameraState _state = CameraState.values()[0];
+
+    private String directoryURL = null;
+    private int plyCounter = 0;
 
     private final ActivityResultLauncher<String[]> requestPermissionLauncher = registerForActivityResult(new ActivityResultContracts.RequestMultiplePermissions(), permissions -> {
         if (permissions.containsValue(false)) {
@@ -117,6 +122,14 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
         installRequested = false;
         depthReceived = false;
 
+//        Bundle bundle = getArguments();
+//        if(bundle != null) {
+//            directoryURL = bundle.getString("path", directoryURL);
+//            plyCounter = bundle.getInt("count", 0);
+//            Log.e(TAG,"directoryURL = " + directoryURL + " plyCounter = " + plyCounter);
+//        } else{
+//            Log.e(TAG, "Bundle is null");
+//        }
         return view;
     }
 
@@ -359,8 +372,23 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer {
         }
     }
 
+    @Override
+    public void onDataReceived(@Nullable String directoryURL, int plyCounter) {
+        this.directoryURL = directoryURL;
+        this.plyCounter = plyCounter;
+        Log.e(TAG,"directoryURL = " + directoryURL);
+        Log.e(TAG, "plyCounter = " + plyCounter);
+    }
+
     private void showPreview() {
         PreviewBottomSheetFragment preview = new PreviewBottomSheetFragment();
+        preview.setListener(this);
+
+        Bundle bundle = new Bundle();
+        bundle.putString("path", directoryURL);
+        bundle.putInt("count", plyCounter);
+        preview.setArguments(bundle);
+
         preview.show(getParentFragmentManager(), preview.getTag());
     }
 }

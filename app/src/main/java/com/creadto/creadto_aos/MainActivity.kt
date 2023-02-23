@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import com.creadto.creadto_aos.camera.ui.CameraFragment
 import com.creadto.creadto_aos.convert.ConvertFragment
+import com.creadto.creadto_aos.convert.network.ApiRemoteSource
 import com.creadto.creadto_aos.databinding.ActivityMainBinding
 import com.creadto.creadto_aos.gallery.GalleryFragment
 
@@ -12,6 +13,7 @@ class MainActivity : AppCompatActivity() {
 
     private var _binding : ActivityMainBinding? = null
     private val binding get() = _binding!!
+    private val apiRemoteSource = ApiRemoteSource()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -49,7 +51,7 @@ class MainActivity : AppCompatActivity() {
 
                 R.id.nav_convert -> {
                     supportFragmentManager.beginTransaction()
-                        .replace(R.id.nav_host_container, ConvertFragment()).commit()
+                        .replace(R.id.nav_host_container, ConvertFragment(apiRemoteSource)).commit()
                     true
                 }
 
