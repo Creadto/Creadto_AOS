@@ -1,4 +1,4 @@
-package com.creadto.creadto_aos.camera.io
+package com.creadto.creadto_aos.io
 
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import kotlinx.coroutines.Dispatchers

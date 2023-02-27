@@ -1,10 +1,7 @@
 package com.creadto.creadto_aos.camera.ui
 
 import android.app.Dialog
-import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -13,7 +10,7 @@ import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.camera.PointCloudRenderer
 import com.creadto.creadto_aos.camera.Renderer
 import com.creadto.creadto_aos.camera.Renderer.particleData
-import com.creadto.creadto_aos.camera.io.PlyWriter
+import com.creadto.creadto_aos.io.PlyWriter
 import com.creadto.creadto_aos.camera.model.Particle
 import com.creadto.creadto_aos.databinding.PreviewBottomSheetBinding
 import com.google.android.material.bottomsheet.BottomSheetBehavior

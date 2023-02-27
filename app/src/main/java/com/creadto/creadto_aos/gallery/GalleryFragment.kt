@@ -11,6 +11,7 @@ import android.view.ViewGroup
 import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.RecyclerView
+import com.creadto.creadto_aos.MainActivity
 import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.databinding.FragmentGalleryBinding
 import java.io.File
@@ -37,11 +38,6 @@ class GalleryFragment : Fragment() {
         init()
     }
 
-    override fun onDestroy() {
-        _binding = null
-        super.onDestroy()
-    }
-
     private fun init() {
         setupRecyclerView()
     }
@@ -64,7 +60,9 @@ class GalleryFragment : Fragment() {
 
         galleryAdapter.setOnItemClickListener(object: GalleryAdapter.FileClickListener{
             override fun onItemClickListener(file: String) {
-                Log.d("TEST", "${file}")
+                (activity as MainActivity).supportFragmentManager
+                    .beginTransaction()
+                    .replace(R.id.nav_host_container, DetailFragment(file)).commit()
             }
         })
     }
@@ -143,5 +141,10 @@ class GalleryFragment : Fragment() {
 
         deleteDrawable.setBounds(deleteIconLeft, deleteIconTop, deleteIconRight, deleteIconBottom)
         deleteDrawable.draw(c)
+    }
+
+    override fun onDestroy() {
+        _binding = null
+        super.onDestroy()
     }
 }
