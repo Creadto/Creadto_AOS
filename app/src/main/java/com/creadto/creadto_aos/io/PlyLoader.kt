@@ -27,18 +27,36 @@ class PlyLoader {
             line = reader.readLine()
         }
 
-        for (i in 0 until vertexCount) {
-            line = reader.readLine()
-            val components = line.split(" ")
-            val x = components[0].toFloat()
-            val y = components[1].toFloat()
-            val z = components[2].toFloat()
-            val r = components[3].toInt()
-            val g = components[4].toInt()
-            val b = components[5].toInt()
-            points.add(Particle(x, y, z, r, g, b))
-            pointIndex++
+        if(plyFile.name == "Mesh.ply"){
+            for (i in 0 until vertexCount) {
+                line = reader.readLine()
+                val components = line.split(" ")
+                if(components.contains("-nan(ind)")) continue
+                val x = components[0].toFloat()
+                val y = components[1].toFloat()
+                val z = components[2].toFloat()
+                val r = components[6].toInt()
+                val g = components[7].toInt()
+                val b = components[8].toInt()
+                points.add(Particle(x, y, z, r, g, b))
+                pointIndex++
+            }
+        } else {
+            for (i in 0 until vertexCount) {
+                line = reader.readLine()
+                val components = line.split(" ")
+                val x = components[0].toFloat()
+                val y = components[1].toFloat()
+                val z = components[2].toFloat()
+                val r = components[3].toInt()
+                val g = components[4].toInt()
+                val b = components[5].toInt()
+                points.add(Particle(x, y, z, r, g, b))
+                pointIndex++
+            }
         }
+
+
 
         reader.close()
         return points

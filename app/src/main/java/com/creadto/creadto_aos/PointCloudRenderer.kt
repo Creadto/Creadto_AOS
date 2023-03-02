@@ -1,4 +1,4 @@
-package com.creadto.creadto_aos.camera
+package com.creadto.creadto_aos
 
 import android.opengl.GLSurfaceView
 import android.opengl.GLU
@@ -16,7 +16,7 @@ class PointCloudRenderer(
 
     private val vertexBuffer: FloatBuffer
     private val colorBuffer: ByteBuffer
-    private val camera = floatArrayOf(0f, 0f, 1f)
+    var camera = floatArrayOf(0f, 0f, 1f, 1f)
 
     init {
         val vertexData = pointCloud.flatMap { listOf(it.x, it.y, it.z) }
@@ -42,7 +42,6 @@ class PointCloudRenderer(
         gl?.glEnableClientState(GL10.GL_COLOR_ARRAY)
         gl?.glColorPointer(4, GL10.GL_UNSIGNED_BYTE, 0, colorBuffer)
         gl?.glDrawArrays(GL10.GL_POINTS, 0, pointCloud.size)
-
     }
 
     override fun onSurfaceChanged(gl: GL10?, width: Int, height: Int) {

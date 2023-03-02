@@ -11,6 +11,7 @@ import androidx.activity.OnBackPressedCallback
 import com.creadto.creadto_aos.MainActivity
 import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.databinding.FragmentDetailBinding
+import com.creadto.creadto_aos.viewer.ui.ViewerFragment
 import java.io.File
 
 class DetailFragment(

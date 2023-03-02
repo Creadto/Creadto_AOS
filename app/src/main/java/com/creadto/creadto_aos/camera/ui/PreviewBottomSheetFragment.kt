@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.lifecycleScope
 import com.creadto.creadto_aos.R
-import com.creadto.creadto_aos.camera.PointCloudRenderer
+import com.creadto.creadto_aos.PointCloudRenderer
 import com.creadto.creadto_aos.camera.Renderer
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import com.creadto.creadto_aos.io.PlyWriter
