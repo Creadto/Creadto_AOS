@@ -197,9 +197,9 @@ class PlyModel(inputStream: InputStream) : IndexedModel() {
                 indices.add(index3)
 
                 Util.calculateNormal(
-                    vertices[index1], vertices[index1 + 1], vertices[index1 + 2],
-                    vertices[index2], vertices[index2 + 1], vertices[index2 + 2],
-                    vertices[index3], vertices[index3 + 1], vertices[index3 + 2],
+                    vertices[index1 * 3], vertices[index1 * 3 + 1], vertices[index1 * 3 + 2],
+                    vertices[index2 * 3], vertices[index2 * 3 + 1], vertices[index2 * 3 + 2],
+                    vertices[index3 * 3], vertices[index3 * 3 + 1], vertices[index3 * 3 + 2],
                     customNormal
                 )
                 normalBucket.add(customNormal[0])
@@ -538,7 +538,16 @@ class PlyModel(inputStream: InputStream) : IndexedModel() {
             i++
 
             lineArr = line.split(spaceRegex)
-            if(lineArr.contains("-nan(ind)")) continue
+            if(lineArr.contains("-nan(ind)")) {
+                vertices.add(0f)
+                vertices.add(0f)
+                vertices.add(0f)
+                colors.add(0f)
+                colors.add(0f)
+                colors.add(0f)
+                colors.add(1f)
+                continue
+            }
             x = lineArr[xIndex].toFloat()
             y = lineArr[yIndex].toFloat()
             z = lineArr[zIndex].toFloat()
