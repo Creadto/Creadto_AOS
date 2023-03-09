@@ -75,7 +75,7 @@ class ModelRenderer(private val model: Model?) : GLSurfaceView.Renderer {
     }
 
     override fun onSurfaceCreated(unused: GL10, config: EGLConfig) {
-        GLES20.glClearColor(0.2f, 0.2f, 0.2f, 1f)
+        GLES20.glClearColor(1f, 1f, 1f, 1f)
         GLES20.glEnable(GLES20.GL_CULL_FACE)
         GLES20.glEnable(GLES20.GL_DEPTH_TEST)
         //GLES20.glEnable(GLES20.GL_BLEND);

@@ -1,5 +1,6 @@
 package com.creadto.creadto_aos.io
 
+import android.opengl.Matrix
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -20,6 +21,14 @@ class PlyWriter {
             val file = File(path, fileName)
             val vertexCount: Int = particleData.size
 
+            // rotate -90 degrees around its y-axis(z- -> x+)
+            val rotationMatrix = floatArrayOf(
+                0f, 0f, 1f, 0f,
+                0f, 1f, 0f, 0f,
+                -1f, 0f, 0f, 0f,
+                0f, 0f, 0f, 1f
+            )
+
             BufferedWriter(FileWriter(file)).use { writer ->
                 writer.write("ply\n")
                 writer.write("format ascii 1.0\n")
@@ -35,9 +44,15 @@ class PlyWriter {
                 writer.write("property list uchar int vertex_indices\n")
                 writer.write("end_header\n")
 
+                var vector: FloatArray? = null
+
                 particleData.forEach { vertex ->
-                    writer.write("${vertex.x} ${vertex.y} ${vertex.z} ${vertex.r} ${vertex.g} ${vertex.b} 255\n")
+                    vector = floatArrayOf(vertex.x, vertex.y, vertex.z, 1f)
+                    val rotatedVector = FloatArray(4)
+                    Matrix.multiplyMV(rotatedVector, 0 , rotationMatrix, 0, vector, 0)
+                    writer.write("${rotatedVector[0]} ${rotatedVector[1]} ${rotatedVector[2]} ${vertex.r} ${vertex.g} ${vertex.b} 255\n")
                 }
+
             }
         }
 }

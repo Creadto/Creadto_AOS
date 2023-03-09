@@ -1,10 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout
-    android:id = "@+id/containerView"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/containerView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".viewer.ui.ViewerFragment">
 
+    <ListView
+        android:id="@+id/left_list"
+        android:layout_width="80dp"
+        android:layout_height="500dp"
+        android:layout_gravity="center|left"
+        android:visibility="gone" />
+
+    <ListView
+        android:id="@+id/right_list"
+        android:layout_width="80dp"
+        android:layout_height="500dp"
+        android:layout_gravity="center|right"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/btn_details"
+        android:layout_width="200dp"
+        android:layout_height="70dp"
+        android:layout_gravity="center | bottom"
+        android:layout_marginBottom="30dp"
+        android:background="#248aff"
+        android:text="Details"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold"
+        android:visibility ="gone"/>
 </FrameLayout>

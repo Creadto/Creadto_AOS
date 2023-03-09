@@ -10,6 +10,11 @@ import java.util.concurrent.CopyOnWriteArrayList
 import javax.microedition.khronos.egl.EGLConfig
 import javax.microedition.khronos.opengles.GL10
 
+/**
+ * 해당 클래스는 PreviewBottomSheetFragment랑 연결되어 있는데, 추후에 이를 삭제하고 ModelSurfaceView랑 엮어야 함.
+ */
+
+
 class PointCloudRenderer(
     private val pointCloud: CopyOnWriteArrayList<Particle>
 ) : GLSurfaceView.Renderer {

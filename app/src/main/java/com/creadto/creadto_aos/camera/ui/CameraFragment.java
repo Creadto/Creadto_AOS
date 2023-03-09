@@ -8,7 +8,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import android.Manifest;
-import android.content.Intent;
 import android.media.Image;
 import android.opengl.GLES20;
 import android.opengl.GLSurfaceView;
@@ -31,6 +30,7 @@ import com.google.ar.core.ArCoreApk;
 import com.google.ar.core.Camera;
 import com.google.ar.core.Config;
 import com.google.ar.core.Frame;
+import com.google.ar.core.Pose;
 import com.google.ar.core.Session;
 import com.google.ar.core.TrackingState;
 import com.google.ar.core.exceptions.CameraNotAvailableException;
@@ -145,6 +145,7 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
                     case IDLE :
                         btn_camera.setImageResource(R.drawable.camera_button_recording);
                         _state = CameraState.RUNNING;
+                        setCameraDirection();
                         break;
                     case RUNNING :
                         btn_camera.setImageResource(R.drawable.camera_button);
@@ -169,6 +170,24 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
             }
         });
 
+    }
+
+    private void setCameraDirection() {
+        // Note that order matters - see the note in onPause(), the reverse applies here.
+        try {
+            // Wait until the frame is no longer being processed.
+            synchronized (frameInUseLock) {
+                // Enable raw depth estimation and auto focus mode while ARCore is running.
+                Config config = session.getConfig();
+                config.setDepthMode(Config.DepthMode.RAW_DEPTH_ONLY);
+                session.configure(config);
+                session.resume();
+            }
+        } catch (CameraNotAvailableException e) {
+            messageSnackbarHelper.showError(requireActivity(), "Camera not available. Try restarting the app.");
+            session = null;
+            return;
+        }
     }
 
     @Override
@@ -241,21 +260,21 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
             }
         }
 
-        // Note that order matters - see the note in onPause(), the reverse applies here.
-        try {
-            // Wait until the frame is no longer being processed.
-            synchronized (frameInUseLock) {
-                // Enable raw depth estimation and auto focus mode while ARCore is running.
-                Config config = session.getConfig();
-                config.setDepthMode(Config.DepthMode.RAW_DEPTH_ONLY);
-                session.configure(config);
-                session.resume();
-            }
-        } catch (CameraNotAvailableException e) {
-            messageSnackbarHelper.showError(requireActivity(), "Camera not available. Try restarting the app.");
-            session = null;
-            return;
-        }
+//        // Note that order matters - see the note in onPause(), the reverse applies here.
+//        try {
+//            // Wait until the frame is no longer being processed.
+//            synchronized (frameInUseLock) {
+//                // Enable raw depth estimation and auto focus mode while ARCore is running.
+//                Config config = session.getConfig();
+//                config.setDepthMode(Config.DepthMode.RAW_DEPTH_ONLY);
+//                session.configure(config);
+//                session.resume();
+//            }
+//        } catch (CameraNotAvailableException e) {
+//            messageSnackbarHelper.showError(requireActivity(), "Camera not available. Try restarting the app.");
+//            session = null;
+//            return;
+//        }
 
         surfaceView.onResume();
         displayRotationHelper.onResume();

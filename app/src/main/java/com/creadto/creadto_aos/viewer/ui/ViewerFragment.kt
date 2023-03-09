@@ -14,14 +14,20 @@ import com.creadto.creadto_aos.databinding.FragmentViewerBinding
 import com.creadto.creadto_aos.gallery.DetailFragment
 import com.creadto.creadto_aos.io.PlyLoader
 import com.creadto.creadto_aos.viewer.ModelSurfaceView
+import com.creadto.creadto_aos.viewer.model.Measurement
 import com.creadto.creadto_aos.viewer.util.ModelViewerApplication
 import com.creadto.creadto_aos.viewer.model.PlyModel
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
+import java.io.BufferedReader
 import java.io.File
+import java.io.FileReader
 import java.util.concurrent.CopyOnWriteArrayList
 
 class ViewerFragment(
     private val directoryName : String,
-    private val plyFile : File
+    private val plyFile : File,
+    private val result : Boolean
 ) : Fragment() {
 
     companion object {
@@ -62,6 +68,17 @@ class ViewerFragment(
     }
 
     private fun init() {
+        if(result) {
+            binding.leftList.visibility = View.VISIBLE
+            binding.rightList.visibility = View.VISIBLE
+            binding.btnDetails.visibility = View.VISIBLE
+
+
+            binding.btnDetails.setOnClickListener {
+
+            }
+        }
+
         val pointCloud = plyLoader.load(plyFile)
         _particleData.addAll(pointCloud)
 
@@ -71,21 +88,24 @@ class ViewerFragment(
 
         modelGLSurfaceView = ModelSurfaceView(requireContext(), model)
         binding.containerView.addView(modelGLSurfaceView)
+    }
+
+    private fun readJsonFile() {
+        val filePath = context?.filesDir!!.path + "/" + directoryName + "/Measurement.json"
+        val file = File(filePath)
+
+        val jsonString = StringBuilder()
+        BufferedReader(FileReader(file)).use { reader ->
+            var line = reader.readLine()
+            while (line != null) {
+                jsonString.append(line)
+                line = reader.readLine()
+            }
+        }
 
 
-//        if(modelGLSurfaceView != null) {
-//            binding.containerView.removeView(modelGLSurfaceView)
-//        }
-//        modelGLSurfaceView = PointCloudSurfaceView(context as MainActivity, _particleData)
-//        binding.containerView.addView(modelGLSurfaceView)
-
-
-//        binding.GLSurfaceView.setRenderer(PointCloudRenderer(_particleData))
-//        modelGLSurfaceView = ModelGLSurfaceView(requireContext(), _particleData)
-//        binding.GLSurfaceView.setOnTouchListener { _, event ->
-//            modelGLSurfaceView!!.onTouchEvent(event)
-//            true
-//        }
+        val listType = object : TypeToken<List<Measurement>>() {}.type
+        return Gson().fromJson(jsonString.toString(), listType)
     }
 
     override fun onDestroy() {

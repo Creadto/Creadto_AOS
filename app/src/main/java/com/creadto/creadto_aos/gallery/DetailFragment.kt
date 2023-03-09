@@ -15,13 +15,14 @@ import com.creadto.creadto_aos.viewer.ui.ViewerFragment
 import java.io.File
 
 class DetailFragment(
-    private val directoryName : String
+    private val directoryName: String
 ) : Fragment() {
     companion object {
         private const val TAG = "[Detail]"
     }
-    private lateinit var callback : OnBackPressedCallback
-    private var _binding : FragmentDetailBinding? = null
+
+    private lateinit var callback: OnBackPressedCallback
+    private var _binding: FragmentDetailBinding? = null
     private val binding get() = _binding!!
 
     override fun onAttach(context: Context) {
@@ -59,7 +60,7 @@ class DetailFragment(
 
         val fileDir = File(context?.filesDir, directoryName)
 
-        if(fileDir!!.exists()){
+        if (fileDir!!.exists()) {
             val fileNames = fileDir.listFiles()?.map { file ->
                 file.name
             } ?: emptyList()
@@ -69,14 +70,18 @@ class DetailFragment(
             Log.e(TAG, "Directory not found")
         }
 
-        detailAdapter.setOnItemClickListener(object: GalleryAdapter.FileClickListener{
+        detailAdapter.setOnItemClickListener(object : GalleryAdapter.FileClickListener {
             override fun onItemClickListener(file: String) {
+                var result = false
+                if (file == "Mesh.ply") { result = true }
                 val filePath = context?.filesDir!!.path + "/" + directoryName + "/" + file
                 val file = File(filePath)
 
                 (activity as MainActivity).supportFragmentManager
                     .beginTransaction()
-                    .replace(R.id.nav_host_container, ViewerFragment(directoryName, file)).commit()
+                    .replace(R.id.nav_host_container, ViewerFragment(directoryName, file, result)).commit()
+
+
             }
         })
     }
