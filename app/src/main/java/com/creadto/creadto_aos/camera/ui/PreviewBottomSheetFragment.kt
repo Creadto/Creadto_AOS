@@ -2,10 +2,13 @@ package com.creadto.creadto_aos.camera.ui
 
 import android.app.Dialog
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
+import com.creadto.creadto_aos.MainActivity
 import com.creadto.creadto_aos.R
 import com.creadto.creadto_aos.PointCloudRenderer
 import com.creadto.creadto_aos.camera.Renderer
@@ -13,9 +16,13 @@ import com.creadto.creadto_aos.camera.Renderer.particleData
 import com.creadto.creadto_aos.io.PlyWriter
 import com.creadto.creadto_aos.camera.model.Particle
 import com.creadto.creadto_aos.databinding.PreviewBottomSheetBinding
+import com.creadto.creadto_aos.viewer.ui.ViewerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -38,6 +45,7 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
     private var plyCounter : Int = 0
 
     private var listener : FileListener? = null
+    private lateinit var viewer: ViewerFragment
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -46,12 +54,19 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
     ): View? {
         _binding = PreviewBottomSheetBinding.inflate(inflater, container, false)
         _particleData.addAll(particleData)
-        binding.GLSurfaceView.setRenderer(PointCloudRenderer(_particleData))
         return binding.root
     }
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return super.onCreateDialog(savedInstanceState)
+        val dialog = super.onCreateDialog(savedInstanceState)
+        dialog.setContentView(R.layout.preview_bottom_sheet)
+        // Set the dialog to be expanded by default.
+        val parentLayout = dialog.findViewById<View>(com.google.android.material.R.id.design_bottom_sheet)
+        parentLayout.layoutParams.height = ViewGroup.LayoutParams.MATCH_PARENT
+        val bottomSheetBehavior = BottomSheetBehavior.from(parentLayout)
+        bottomSheetBehavior.state = BottomSheetBehavior.STATE_EXPANDED
+        bottomSheetBehavior.isDraggable = false
+        return dialog
     }
 
     fun setListener(listener : FileListener) {
@@ -62,6 +77,8 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = PreviewBottomSheetBinding.bind(view)
+
         bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
         bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior!!.isDraggable = false
@@ -69,22 +86,43 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
         directoryURL = arguments?.getString("path", null)
         plyCounter = arguments?.getInt("count", 0)!!
 
+        if(plyCounter % 4 == 0) { makeDirectory() }
+
+        viewLifecycleOwner.lifecycleScope.launch {
+            val writePlyFile = PlyWriter()
+            writePlyFile.writePlyFile(directoryURL!!)
+
+            val dir = File(directoryURL!!)
+            val plyFile = dir.listFiles().last()
+            val directoryName = directoryURL!!.split("/").last()
+
+            withContext(Dispatchers.Main) {
+                viewer = ViewerFragment(
+                    directoryName = directoryName,
+                    plyFile = plyFile,
+                    result = false
+                )
+
+                childFragmentManager.beginTransaction()
+                    .add(R.id.frag_viewer,viewer)
+                    .commit()
+            }
+        }
+
         binding.btnDelete.setOnClickListener {
+            if(plyCounter % 4 == 0) { deleteDirectory() }
+            else { deleteLastPly() }
+
             renderer.clearParticles()
             sendData(directoryURL, plyCounter)
             dismiss()
         }
 
         binding.btnSave.setOnClickListener {
-            viewLifecycleOwner.lifecycleScope.launch {
-                if(plyCounter % 4 == 0) { makeDirectory() }
-                val writePlyFile = PlyWriter()
-                writePlyFile.writePlyFile(directoryURL!!)
-                plyCounter++
-                renderer.clearParticles()
-                sendData(directoryURL, plyCounter)
-                dismiss()
-            }
+            plyCounter++
+            renderer.clearParticles()
+            sendData(directoryURL, plyCounter)
+            dismiss()
         }
     }
 
@@ -96,6 +134,18 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
         directoryURL = "${requireContext().filesDir.path}/$time"
         val dir = File(directoryURL)
         dir.mkdir()
+    }
+
+    private fun deleteDirectory() {
+        val dir = File(directoryURL)
+        dir.delete()
+        sendData(directoryURL = null, plyCounter = 0)
+    }
+
+    private fun deleteLastPly() {
+        val dir = File(directoryURL)
+        val files = dir.listFiles()
+        files.last().delete()
     }
 
     private fun sendData(directoryURL : String?, plyCounter : Int) { listener?.onDataReceived(directoryURL, plyCounter) }

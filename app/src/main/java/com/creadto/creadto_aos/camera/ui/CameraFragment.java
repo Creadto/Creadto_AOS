@@ -122,14 +122,6 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
         installRequested = false;
         depthReceived = false;
 
-//        Bundle bundle = getArguments();
-//        if(bundle != null) {
-//            directoryURL = bundle.getString("path", directoryURL);
-//            plyCounter = bundle.getInt("count", 0);
-//            Log.e(TAG,"directoryURL = " + directoryURL + " plyCounter = " + plyCounter);
-//        } else{
-//            Log.e(TAG, "Bundle is null");
-//        }
         return view;
     }
 
