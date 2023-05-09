@@ -1,6 +1,7 @@
 package com.creadto.creadto_aos.io
 
 import android.opengl.Matrix
+import android.util.Log
 import com.creadto.creadto_aos.camera.Renderer.particleData
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -11,13 +12,15 @@ import java.text.SimpleDateFormat
 import java.util.*
 
 class PlyWriter {
-    suspend fun writePlyFile(path : String) =
+    suspend fun writePlyFile(path : String, plyCounter : Int) =
         withContext(Dispatchers.IO) {
             val cal = Calendar.getInstance()
             val dateFormat = SimpleDateFormat("yyyyMMdd_HHmmSS")
             val time = dateFormat.format(cal.time)
 
-            val fileName = "$time.ply"
+            val directions = listOf("Front", "Left", "Back", "Right")
+            val fileName = "${directions.get(plyCounter % 4)}_$time.ply"
+
             val file = File(path, fileName)
             val vertexCount: Int = particleData.size
 
@@ -32,6 +35,7 @@ class PlyWriter {
             BufferedWriter(FileWriter(file)).use { writer ->
                 writer.write("ply\n")
                 writer.write("format ascii 1.0\n")
+                writer.write("comment direction ${directions.get(plyCounter % 4)}\n")
                 writer.write("element vertex $vertexCount\n")
                 writer.write("property float x\n")
                 writer.write("property float y\n")

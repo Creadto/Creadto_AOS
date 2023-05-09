@@ -121,7 +121,6 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
 
         installRequested = false;
         depthReceived = false;
-
         return view;
     }
 
@@ -161,6 +160,8 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
 
             }
         });
+
+        Log.e("TEST", "onViewCreated");
 
     }
 
@@ -392,6 +393,12 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
     }
 
     private void showPreview() {
+        if(!depthReceived) {
+            Toast.makeText(requireActivity(), "Depth is not accumulated", Toast.LENGTH_LONG)
+                    .show();
+            return;
+        }
+
         PreviewBottomSheetFragment preview = new PreviewBottomSheetFragment();
         preview.setListener(this);
 
@@ -401,5 +408,23 @@ public class CameraFragment extends Fragment implements GLSurfaceView.Renderer, 
         preview.setArguments(bundle);
 
         preview.show(getParentFragmentManager(), preview.getTag());
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("TEST", "onStop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("TEST", "onDestoryView");
+    }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+        Log.e("TEST","onStart");
     }
 }

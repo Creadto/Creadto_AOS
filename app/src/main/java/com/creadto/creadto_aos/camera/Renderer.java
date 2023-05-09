@@ -3,6 +3,7 @@ package com.creadto.creadto_aos.camera;
 import android.content.Context;
 import android.opengl.GLES20;
 import android.opengl.Matrix;
+import android.util.Log;
 
 import com.creadto.creadto_aos.camera.model.DepthData;
 import com.creadto.creadto_aos.camera.model.FrameData;
@@ -224,9 +225,37 @@ public final class Renderer {
     }
 
     public void clearParticles() {
+        // Clear the depth frames buffer.
         GLES20.glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        depthFrames = new ArrayList<>();
-        frameData = new ArrayList<>();
-        particleData = new ArrayList<>();
+        GLES20.glClear(GLES20.GL_COLOR_BUFFER_BIT | GLES20.GL_DEPTH_BUFFER_BIT);
+        depthFrames.clear();
+        frameData.clear();
+        particleData.clear();
+
+//        // Delete the OpenGL buffers.
+//        int[] buffersToDelete = {positionBuffer, colorBuffer};
+//        GLES20.glDeleteBuffers(2, buffersToDelete, 0);
+//
+//        // Reset the buffer sizes.
+//        positionBufferSize = INITIAL_BUFFER_POINTS * POSITION_BYTES_PER_POINT;
+//        colorBufferSize = INITIAL_BUFFER_POINTS * COLOR_BYTES_PER_POINT;
+//
+//        // Generate new OpenGL buffers.
+//        int[] bufferNames = new int[2];
+//        GLES20.glGenBuffers(2, bufferNames, 0);
+//        positionBuffer = bufferNames[0];
+//        colorBuffer = bufferNames[1];
+//
+//        // Bind the position buffer and initialize its size.
+//        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, positionBuffer);
+//        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, positionBufferSize, null, GLES20.GL_DYNAMIC_DRAW);
+//
+//        // Bind the color buffer and initialize its size.
+//        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, colorBuffer);
+//        GLES20.glBufferData(GLES20.GL_ARRAY_BUFFER, colorBufferSize, null, GLES20.GL_DYNAMIC_DRAW);
+//
+//        // Unbind the buffers.
+//        GLES20.glBindBuffer(GLES20.GL_ARRAY_BUFFER, 0);
+
     }
 }

@@ -19,10 +19,7 @@ import com.creadto.creadto_aos.databinding.PreviewBottomSheetBinding
 import com.creadto.creadto_aos.viewer.ui.ViewerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.async
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
+import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
@@ -82,6 +79,9 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
         bottomSheetBehavior = BottomSheetBehavior.from(view.parent as View)
         bottomSheetBehavior!!.state = BottomSheetBehavior.STATE_EXPANDED
         bottomSheetBehavior!!.isDraggable = false
+        binding.progressBar.visibility = View.VISIBLE
+        binding.btnDelete.isClickable = false
+        binding.btnSave.isClickable = false
 
         directoryURL = arguments?.getString("path", null)
         plyCounter = arguments?.getInt("count", 0)!!
@@ -90,7 +90,7 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
 
         viewLifecycleOwner.lifecycleScope.launch {
             val writePlyFile = PlyWriter()
-            writePlyFile.writePlyFile(directoryURL!!)
+            writePlyFile.writePlyFile(directoryURL!!, plyCounter)
 
             val dir = File(directoryURL!!)
             val plyFile = dir.listFiles().last()
@@ -106,6 +106,10 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
                 childFragmentManager.beginTransaction()
                     .add(R.id.frag_viewer,viewer)
                     .commit()
+
+                binding.progressBar.visibility = View.GONE
+                binding.btnDelete.isClickable = true
+                binding.btnSave.isClickable = true
             }
         }
 
