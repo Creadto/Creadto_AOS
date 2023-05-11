@@ -1,8 +1,9 @@
 package com.creadto.creadto_aos
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.creadto.creadto_aos.camera.ui.CameraFragment
+import com.creadto.creadto_aos.camera.ui.CameraFragment2
 import com.creadto.creadto_aos.convert.ConvertFragment
 import com.creadto.creadto_aos.convert.network.ApiRemoteSource
 import com.creadto.creadto_aos.databinding.ActivityMainBinding
@@ -22,7 +23,7 @@ class MainActivity : AppCompatActivity() {
         setUpBottomNavigationBar()
         supportFragmentManager.beginTransaction()
             .replace(R.id.nav_host_container,
-                CameraFragment()
+                CameraFragment2()
             ).commit()
 
     }
@@ -44,7 +45,7 @@ class MainActivity : AppCompatActivity() {
                 R.id.nav_camera -> {
                     supportFragmentManager.beginTransaction()
                         .replace(R.id.nav_host_container,
-                            CameraFragment()
+                            CameraFragment2()
                         ).commit()
                     true
                 }

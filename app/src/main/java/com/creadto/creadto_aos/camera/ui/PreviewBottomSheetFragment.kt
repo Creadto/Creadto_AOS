@@ -2,19 +2,12 @@ package com.creadto.creadto_aos.camera.ui
 
 import android.app.Dialog
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.lifecycle.lifecycleScope
-import com.creadto.creadto_aos.MainActivity
 import com.creadto.creadto_aos.R
-import com.creadto.creadto_aos.PointCloudRenderer
-import com.creadto.creadto_aos.camera.Renderer
-import com.creadto.creadto_aos.camera.Renderer.particleData
-import com.creadto.creadto_aos.io.PlyWriter
-import com.creadto.creadto_aos.camera.model.Particle
+import com.creadto.creadto_aos.camera.util.FileListener
 import com.creadto.creadto_aos.databinding.PreviewBottomSheetBinding
 import com.creadto.creadto_aos.viewer.ui.ViewerFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
@@ -23,7 +16,6 @@ import kotlinx.coroutines.*
 import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
-import java.util.concurrent.CopyOnWriteArrayList
 
 class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
 
@@ -34,9 +26,6 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
     private var bottomSheetBehavior : BottomSheetBehavior<View>? = null
     private var _binding: PreviewBottomSheetBinding? = null
     private val binding get() = _binding!!
-    private val renderer = Renderer()
-
-    private val _particleData : CopyOnWriteArrayList<Particle> = CopyOnWriteArrayList()
 
     private var directoryURL : String? = null
     private var plyCounter : Int = 0
@@ -50,7 +39,6 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
         savedInstanceState: Bundle?
     ): View? {
         _binding = PreviewBottomSheetBinding.inflate(inflater, container, false)
-        _particleData.addAll(particleData)
         return binding.root
     }
 
@@ -89,8 +77,8 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
         if(plyCounter % 4 == 0) { makeDirectory() }
 
         viewLifecycleOwner.lifecycleScope.launch {
-            val writePlyFile = PlyWriter()
-            writePlyFile.writePlyFile(directoryURL!!, plyCounter)
+            //val writePlyFile = PlyWriter()
+            //writePlyFile.writePlyFile(directoryURL!!, plyCounter)
 
             val dir = File(directoryURL!!)
             val plyFile = dir.listFiles().last()
@@ -117,14 +105,12 @@ class PreviewBottomSheetFragment : BottomSheetDialogFragment() {
             if(plyCounter % 4 == 0) { deleteDirectory() }
             else { deleteLastPly() }
 
-            renderer.clearParticles()
             sendData(directoryURL, plyCounter)
             dismiss()
         }
 
         binding.btnSave.setOnClickListener {
             plyCounter++
-            renderer.clearParticles()
             sendData(directoryURL, plyCounter)
             dismiss()
         }
